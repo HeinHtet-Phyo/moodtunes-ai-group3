@@ -1,121 +1,179 @@
-# MoodTunes AI — Music Mood Classifier & Song Recommender
+# 🎵 MoodTunes AI — Music Mood Classifier & Song Recommender
 
-UFCE3P-30-3 — Essentials and Applications of Artificial Intelligence
-Group 3 | UWE Bristol | April 2026
+> AI-powered music mood detection and song recommendation system built with LightGBM, cosine similarity, and Streamlit.
+
+![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.32+-red?style=flat-square&logo=streamlit)
+![LightGBM](https://img.shields.io/badge/LightGBM-4.0+-green?style=flat-square)
+![License](https://img.shields.io/badge/License-Academic-purple?style=flat-square)
+
+**Module:** UFCE3P-30-3 — Essentials and Applications of Artificial Intelligence  
+**Group 3 | UWE Bristol | April 2026**
 
 ---
 
-## Team
+## 🌐 Live Demo
+
+> **Streamlit App:** [YOUR_STREAMLIT_LINK_HERE](YOUR_STREAMLIT_LINK_HERE)  
+> *(Replace with your deployed Streamlit URL)*
+
+---
+
+## 👥 Team
 
 | Name | Role | Key Contributions |
 |---|---|---|
-| Hein Htet Phyo | AI Product Developer | Project concept, XGBoost baseline, top-5 recommender, Streamlit UI, GitHub, Final Report |
-| Zulfiqar Khan | Lead ML Engineer | Extended taxonomy 4 to 6 classes, LightGBM, Optuna tuning, evaluation, documentation |
-| Zach | Analyst & PM | EDA visualisations, group liaison, final report, presentations |
-| Htet Htet Wint | Data Engineer | Spotify dataset sourcing, data loading, schema inspection, LR baseline |
-| Layaung Linn Lett | Feature Engineer | Data cleaning, Winsorisation, genre taxonomy 4 classes, RF baseline |
+| **Hein Htet Phyo** | AI Product Developer | Project concept, XGBoost baseline, top-5 recommender, Streamlit UI, GitHub, final report |
+| **Zulfiqar Khan** | Lead ML Engineer | Extended taxonomy 4→6 classes, LightGBM, Optuna tuning, model evaluation, documentation |
+| **Zach** | Analyst & Project Manager | All EDA visualisations, group liaison, final report writing, presentations |
+| **Htet Htet Wint** | Data Engineer | Spotify dataset sourcing, data loading, schema inspection, LR baseline |
+| **Layaung Linn Lett** | Feature Engineer | Data cleaning, Winsorisation, genre taxonomy (4 classes), RF baseline |
 
 ---
 
-## Project Overview
+## 🎯 Project Overview
 
-An end-to-end AI pipeline that:
-1. Collapses 114 Spotify genre labels to 6 mood super-genres
-2. Engineers 42 features from 15 raw audio features
-3. Trains a LightGBM classifier (69% accuracy, 0.90 macro ROC-AUC)
-4. Recommends top 5 individual songs by mood using cosine similarity
+Current music platforms recommend playlists by genre but do not adapt to the listener's **current mood**. MoodTunes AI solves this by:
+
+1. Collapsing **114 Spotify genre labels → 6 mood super-genres** using iterative audio-based taxonomy
+2. Engineering **42 features** from 15 raw Spotify audio features via a custom sklearn transformer
+3. Training a **LightGBM classifier** achieving **69% accuracy** and **0.90 macro ROC-AUC**
+4. Recommending the **top 5 most similar individual songs** — not playlists — using cosine similarity
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-EAAI_Project/
-├── EAAI_Group3_COMPLETE_FINAL.ipynb   <- Main Jupyter notebook
-├── app.py                              <- Streamlit web app
-├── dataset.csv                         <- Spotify Tracks Dataset
-├── requirements.txt
+moodtunes-ai-group3/
+├── EAAI_Group3_COMPLETE_FINAL.ipynb   ← Main Jupyter notebook (Google Colab)
+├── app.py                              ← Streamlit web application
+├── dataset.csv                         ← Spotify Tracks Dataset (114k tracks)
+├── requirements.txt                    ← Python dependencies
 ├── .gitignore
+├── README.md
 ├── models/
-│   ├── final_model.pkl
-│   ├── label_encoder.pkl
-│   ├── preprocessor.pkl
+│   ├── final_model.pkl                 ← Trained LightGBM model
+│   ├── label_encoder.pkl               ← Fitted LabelEncoder
+│   ├── preprocessor.pkl                ← Fitted sklearn Pipeline
 │   └── README.md
 └── artifacts/
-    ├── X_train.npy  X_val.npy  X_test.npy
-    ├── y_train.npy  y_val.npy  y_test.npy
+    ├── X_train.npy                     ← Preprocessed training arrays
+    ├── X_val.npy
+    ├── X_test.npy
+    ├── y_train.npy
+    ├── y_val.npy
+    ├── y_test.npy
     └── README.md
 ```
 
 ---
 
-## How to Run the Streamlit App
+## 🚀 How to Run
+
+### Streamlit App (recommended)
 
 ```bash
+# 1. Clone the repo
+git clone https://github.com/HeinHtet-Phyo/moodtunes-ai-group3.git
+cd moodtunes-ai-group3
+
+# 2. Install dependencies
 pip install -r requirements.txt
+
+# 3. Run the app
 streamlit run app.py
 ```
 
-Opens at: http://localhost:8501
+Opens at: **http://localhost:8501**
+
+### Jupyter Notebook (Google Colab)
+
+1. Upload `EAAI_Group3_COMPLETE_FINAL.ipynb` to Google Colab
+2. Upload `dataset.csv` to Google Drive at `My Drive/EAAI_Project/dataset.csv`
+3. Run all cells — takes approximately 10–15 minutes
 
 ---
 
-## How to Get the Model Files
+## ⚠️ How to Get the Model Files
 
-The models/ folder needs 3 pkl files. Generate them by running the notebook.
+The `models/` folder requires 3 `.pkl` files to run the Streamlit app.
 
-### Option A - Google Colab (recommended)
+**Option A — Google Colab (recommended)**
 
-1. Open EAAI_Group3_COMPLETE_FINAL.ipynb in Google Colab
-2. Upload dataset.csv to Google Drive at: My Drive/EAAI_Project/dataset.csv
-3. Run all cells (about 10-15 minutes)
-4. After Section 4 finishes, go to your Google Drive
-5. Navigate to: My Drive/EAAI_Project/models/
-6. Download these 3 files:
-   - final_model.pkl
-   - label_encoder.pkl
-   - preprocessor.pkl
-7. Place them in the models/ folder of this project
+1. Run all cells in `EAAI_Group3_COMPLETE_FINAL.ipynb` on Google Colab
+2. After Section 4 completes, go to `My Drive/EAAI_Project/models/`
+3. Download and place these 3 files into the `models/` folder:
+   - `final_model.pkl`
+   - `label_encoder.pkl`
+   - `preprocessor.pkl`
 
-### Option B - Run locally
+**Option B — Run locally**
 
 ```bash
 pip install -r requirements.txt
 jupyter notebook EAAI_Group3_COMPLETE_FINAL.ipynb
 ```
 
-Run all cells. Model files save to models/ automatically.
+Run all cells — model files save to `models/` automatically.
 
 ---
 
-## Results
+## 📊 Results
 
-| Metric | Value |
+| Metric | Value | Interpretation |
+|---|---|---|
+| **Macro ROC-AUC** | **0.90** | Excellent — near feature-space ceiling |
+| Test Accuracy | 69% | Strong for 6-class audio classification |
+| Weighted F1 | 0.68 | Gap vs ROC-AUC due to dance class imbalance (52%) |
+| Macro F1 | 0.64 | Consistent across all 6 mood classes |
+
+---
+
+## 🎵 Recommender Modes
+
+| Mode | Description |
 |---|---|
-| Macro ROC-AUC | 0.90 |
-| Test Accuracy | 69% |
-| Weighted F1 | 0.68 |
-| Macro F1 | 0.64 |
+| 🎭 By Mood | Pick happy / chill / focus / sad → top 5 songs |
+| 🔍 By Song | Enter any song title → detect mood → top 5 similar |
+| 🎛️ By Features | Adjust 8 audio sliders → predict mood → top 5 songs |
+| 🎸 By Genre | Browse 6 super-genre categories → top 5 tracks |
 
 ---
 
-## Recommender Modes
+## 🛠️ Tech Stack
 
-- By Mood: happy / chill / focus / sad
-- By Song Title: enter any song name
-- By Audio Features: 8 audio sliders
-- By Genre: 6 super-genre categories
-
----
-
-## References
-
-- Pandya, M. (no date) Spotify Tracks Dataset. Kaggle.
-- Ke, G. et al. (2017) LightGBM. NeurIPS 30, pp. 3146-3154.
-- Akiba, T. et al. (2019) Optuna. KDD, pp. 2623-2631.
-- Salton, G. and McGill, M.J. (1983) Introduction to Modern Information Retrieval.
-- Russell, J.A. (1980) A circumplex model of affect. JPSP 39(6), pp. 1161-1178.
+| Tool | Purpose |
+|---|---|
+| LightGBM | Primary classifier |
+| Optuna | Hyperparameter tuning (TPE sampler) |
+| scikit-learn | Pipeline, preprocessing, evaluation |
+| Streamlit | Web application UI |
+| pandas / numpy | Data processing |
+| Spotify Tracks Dataset | 114,000 tracks, 21 features |
 
 ---
 
-Module: UFCE3P-30-3 | UWE Bristol | Submission: 21 April 2026
+## 📚 References
+
+- Pandya, M. (no date) *Spotify Tracks Dataset* [online]. Kaggle. Available at: https://www.kaggle.com/datasets/maharshipandya/spotify-tracks-dataset [Accessed: 17 December 2025].
+- Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q. and Liu, T. (2017) 'LightGBM: A highly efficient gradient boosting decision tree', in *Advances in Neural Information Processing Systems 30 (NeurIPS 2017)*. New York: Curran Associates, pp. 3146–3154.
+- Akiba, T., Sano, S., Yanase, T., Ohta, T. and Koyama, M. (2019) 'Optuna: A next-generation hyperparameter optimization framework', in *Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining (KDD 2019)*. New York: ACM, pp. 2623–2631.
+- Salton, G. and McGill, M.J. (1983) *Introduction to Modern Information Retrieval*. New York: McGraw-Hill.
+- Hand, D.J. and Till, R.J. (2001) 'A simple generalisation of the area under the ROC curve for multiple class problems', *Machine Learning*, 45(2), pp. 171–186.
+- Russell, J.A. (1980) 'A circumplex model of affect', *Journal of Personality and Social Psychology*, 39(6), pp. 1161–1178.
+- Devlin, J., Chang, M., Lee, K. and Toutanova, K. (2019) 'BERT: Pre-training of deep bidirectional transformers for language understanding', in *Proceedings of NAACL-HLT 2019*. Minneapolis: Association for Computational Linguistics, pp. 4171–4186.
+- Lundberg, S.M. and Lee, S.I. (2017) 'A unified approach to interpreting model predictions', in *Advances in Neural Information Processing Systems 30 (NeurIPS 2017)*. New York: Curran Associates, pp. 4765–4774.
+- Ko, S. (2025) *HWNAS Dataset — Music Mood Classification* [online]. Kaggle. Available at: https://www.kaggle.com/datasets/stanislavko/hwnas-dataset-music-mood-classification [Accessed: 17 December 2025].
+
+---
+
+## 📋 Module Information
+
+| Field | Detail |
+|---|---|
+| Module Code | UFCE3P-30-3 |
+| Module Name | Essentials and Applications of Artificial Intelligence |
+| Module Leaders | Dr Mahmoud Elbattah, Dr Sondess Missaoui |
+| University | UWE Bristol |
+| Submission | 21st April 2026 |
