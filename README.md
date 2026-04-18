@@ -9,7 +9,7 @@ Group 3 | UWE Bristol | April 2026
 
 | Name | Role | Key Contributions |
 |---|---|---|
-| Hein Htet Phyo | AI Product Developer | Project concept, Dataset 2 cleaning, XGBoost baseline, top-5 recommender, Streamlit UI, GitHub |
+| Hein Htet Phyo | AI Product Developer | Project concept, XGBoost baseline, top-5 recommender, Streamlit UI, GitHub, Report |
 | Zulfiqar Khan | Lead ML Engineer | Extended taxonomy 4 to 6 classes, LightGBM, Optuna tuning, evaluation, documentation |
 | Zach | Analyst & PM | EDA visualisations, group liaison, final report, presentations |
 | Htet Htet Wint | Data Engineer | Spotify dataset sourcing, data loading, schema inspection, LR baseline |
