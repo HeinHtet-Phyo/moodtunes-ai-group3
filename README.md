@@ -14,8 +14,9 @@
 
 ## 🌐 Live Demo
 
-> **Streamlit App:** [YOUR_STREAMLIT_LINK_HERE](YOUR_STREAMLIT_LINK_HERE)  
-> *(Replace with your deployed Streamlit URL)*
+> **Streamlit App:** [MoodTunes AI on Streamlit Cloud](https://moodtunes-ai-group3-qt6evwwvsz8rehhbhknxm7.streamlit.app)
+>
+> **Google Colab Notebook:** [Open the project notebook in Google Colab](https://colab.research.google.com/drive/1U0PRS4RPPgek635Pd9leDt0W2Auq8U4d?usp=sharing)
 
 ---
 
@@ -89,7 +90,9 @@ Opens at: **http://localhost:8501**
 
 ### Jupyter Notebook (Google Colab)
 
-1. Upload `EAAI_Group3_COMPLETE_FINAL.ipynb` to Google Colab
+Direct link: [Open in Google Colab](https://colab.research.google.com/drive/1U0PRS4RPPgek635Pd9leDt0W2Auq8U4d?usp=sharing)
+
+1. Open the notebook in Google Colab
 2. Upload `dataset.csv` to Google Drive at `My Drive/EAAI_Project/dataset.csv`
 3. Run all cells — takes approximately 10–15 minutes
 
