@@ -1,0 +1,21 @@
+# Dataset (too large for GitHub — add manually)
+dataset.csv
+*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# Models (optional — uncomment to exclude)
+# models/
+# artifacts/
