@@ -234,13 +234,17 @@ def rec_song(df_rec, scaled, title: str, n: int = 5):
     mdf  = mdf[mdf.index != idx]
     return inp, mdf.sort_values(["similarity","popularity"], ascending=[False,False]).head(n).reset_index(drop=True)
 
-def rec_features(df_rec, scaled, scaler, feats: dict, n: int = 5):
+def rec_features(df_rec, scaled, scaler, feats: dict, n: int = 5, seed: int = 42):
     mood  = assign_mood(pd.Series(feats))
     qvec  = scaler.transform(pd.DataFrame([feats], columns=REC_FEATURES))
     mask  = (df_rec["mood"] == mood).values
     mdf   = df_rec[mask].copy()
-    mdf["similarity"] = cosine_similarity(qvec, scaled[mask])[0]
-    return mood, mdf.sort_values(["similarity","popularity"], ascending=[False,False]).head(n).reset_index(drop=True)
+    sims  = cosine_similarity(qvec, scaled[mask])[0]
+    rng   = np.random.default_rng(seed)
+    noise = rng.uniform(0, 0.08, size=len(mdf))
+    mdf["score"] = sims * 0.6 + (mdf["popularity"] / 100.0) * 0.4 + noise
+    mdf["similarity"] = sims
+    return mood, mdf.sort_values("score", ascending=False).head(n).reset_index(drop=True)
 
 def rec_genre(df_rec, scaled, genre: str, n: int = 5) -> pd.DataFrame:
     mask  = (df_rec["super_genre"] == genre).values
@@ -255,7 +259,7 @@ def rec_genre(df_rec, scaled, genre: str, n: int = 5) -> pd.DataFrame:
 _DEFAULTS = dict(
     sel_mood=None, mood_recs=None, mood_seed=42,
     song_recs=None, song_inp=None,
-    feat_mood=None, feat_recs=None,
+    feat_mood=None, feat_recs=None, feat_seed=42, feat_feats=None,
     genre_recs=None, genre_name=None,
 )
 
@@ -795,9 +799,10 @@ def tab_features(df_rec, scaled, scaler):
     with col_b2:
         if st.button("✦  Get My Top 5 Songs", key="feat_go"):
             with st.spinner("Analysing audio profile..."):
-                mp, recs = rec_features(df_rec, scaled, scaler, feats, n=5)
+                mp, recs = rec_features(df_rec, scaled, scaler, feats, n=5, seed=st.session_state.feat_seed)
             st.session_state.feat_mood = mp
             st.session_state.feat_recs = recs
+            st.session_state.feat_feats = feats
             st.rerun()
     H('</div>')
 
@@ -813,6 +818,24 @@ def tab_features(df_rec, scaled, scaler):
     {cfg3['emoji']} Top 5 {cfg3['label']} Songs for Your Profile</div>
 </div>
 """)
+        H('<div style="max-width:1200px;margin:0 auto;padding:0 40px 10px;">')
+        col_fs, _ = st.columns([1, 4])
+        with col_fs:
+            if st.button("🔀  Shuffle Songs", key="feat_shuffle_btn"):
+                st.session_state.feat_seed = random.randint(0, 99999)
+                if st.session_state.feat_feats is not None:
+                    mp, recs = rec_features(
+                        df_rec,
+                        scaled,
+                        scaler,
+                        st.session_state.feat_feats,
+                        n=5,
+                        seed=st.session_state.feat_seed,
+                    )
+                    st.session_state.feat_mood = mp
+                    st.session_state.feat_recs = recs
+                st.rerun()
+        H('</div>')
         H('<div style="max-width:1200px;margin:0 auto;padding:0 40px 40px;">')
         song_cards(recs, mood=mp)
         H('</div>')
