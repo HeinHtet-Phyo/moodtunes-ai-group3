@@ -184,6 +184,11 @@ def spotify_url(track: str, artist: str) -> str:
 # ─────────────────────────────────────────────────────────────────────────────
 @st.cache_resource(show_spinner=False)
 def load_data():
+    if not DATA_PATH.exists():
+        raise FileNotFoundError(
+            f"Required data file not found: {DATA_PATH.name}. "
+            "Add it to the GitHub repository so Streamlit Cloud can access it."
+        )
     df = pd.read_csv(DATA_PATH, index_col=0)
     df["super_genre"] = df["track_genre"].map(lambda g: GENRE_MAPPING.get(g, g))
     df = df[df["super_genre"].isin(SUPER_GENRES)].copy()
@@ -1049,7 +1054,16 @@ def main():
     inject_css()
 
     with st.spinner("Loading MoodTunes AI..."):
-        df_rec, scaled, scaler, songs = load_data()
+        try:
+            df_rec, scaled, scaler, songs = load_data()
+        except FileNotFoundError as exc:
+            st.error("Deployment is missing `dataset.csv`.")
+            st.info(
+                "Fix: commit `dataset.csv` to the repository and redeploy the app. "
+                "This project currently loads the dataset from a local file next to `app.py`."
+            )
+            st.code(str(exc))
+            st.stop()
 
     render_header(len(df_rec))
     render_hero()

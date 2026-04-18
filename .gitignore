@@ -1,6 +1,6 @@
-# Dataset (too large for GitHub — add manually)
-dataset.csv
+# CSV files
 *.csv
+!dataset.csv
 
 # Python
 __pycache__/
